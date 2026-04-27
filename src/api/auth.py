@@ -73,9 +73,7 @@ async def login(
             status_code=401, detail="Пользователь с такимми данными не зарегистрирован"
         )
 
-    verif_password = Authentication().verify_password(
-        data.password, user.hashed_password
-    )
+    verif_password = Authentication().verify_password(data.password, user.hashed_password)
     if not verif_password:
         raise HTTPException(status_code=500, detail="Неверный пароль")
 

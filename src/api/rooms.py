@@ -42,15 +42,12 @@ async def add_room(hotel_id: int, db: DBDep, data: RoomAddRequest = Body()):
         room = await db.rooms.add(_room_data)
 
         rooms_facilities_data = [
-            RoomsFacilityAdd(room_id=room.id, facility_id=f_id)
-            for f_id in data.facilities_ids
+            RoomsFacilityAdd(room_id=room.id, facility_id=f_id) for f_id in data.facilities_ids
         ]
         await db.rooms_facilities.add_bulk(rooms_facilities_data)
         await db.commit()
     except sqlalchemy.exc.IntegrityError:
-        raise HTTPException(
-            status_code=401, detail=f"Нет такого отеля с id = {hotel_id}"
-        )
+        raise HTTPException(status_code=401, detail=f"Нет такого отеля с id = {hotel_id}")
     return {"status": "Ok", "data": room}
 
 
@@ -65,9 +62,7 @@ async def update_room(hotel_id: int, db: DBDep, room_id: int, data: RoomAddReque
 
 
 @router.patch("/{hotel_id}/rooms/{room_id}")
-async def partially_update_room(
-    hotel_id: int, db: DBDep, room_id: int, data: RoomPatchRequesst
-):
+async def partially_update_room(hotel_id: int, db: DBDep, room_id: int, data: RoomPatchRequesst):
     _room_data_check = data.model_dump(exclude_none=True)
     _room_data = RoomPatch(hotel_id=hotel_id, **_room_data_check)
     await db.rooms.edit(_room_data, exclude_unset=True, hotel_id=hotel_id, id=room_id)
