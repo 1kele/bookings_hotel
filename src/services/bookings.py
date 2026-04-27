@@ -6,6 +6,5 @@ from src.schemas.bookings import BookingAdd, BookingAddRequest
 
 
 class BookingService:
-
     def __init__(self, db):
         self.db = db
