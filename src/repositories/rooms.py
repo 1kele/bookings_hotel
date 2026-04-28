@@ -1,8 +1,11 @@
 from datetime import date
 
-from sqlalchemy import select
+from pydantic import BaseModel
+from sqlalchemy import select, insert, update
+from sqlalchemy.exc import NoResultFound, IntegrityError
 from sqlalchemy.orm import selectinload, joinedload
 
+from src.exceptions import ObjectNotFoundException
 from src.models.rooms import RoomsOrm
 from src.repositories.base import BaseRepositories
 from src.repositories.mappers.mappers import RoomDataMapper, RoomWithRelsDataMapper
@@ -33,7 +36,9 @@ class RoomsRepository(BaseRepositories):
             select(self.model).options(selectinload(self.model.facilities)).filter_by(**filter_by)
         )
         result = await self.session.execute(query)
-        model = result.scalars().one_or_none()
-        if model is None:
-            return None
+        try:
+            model = result.scalars().one()
+        except NoResultFound:
+            raise ObjectNotFoundException
+
         return RoomWithRelsDataMapper.map_to_domain_entity(model)
