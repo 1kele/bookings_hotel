@@ -6,9 +6,10 @@ from datetime import datetime, timezone, timedelta
 from fastapi import HTTPException
 
 from src.config import settings
+from src.services.base import BaseService
 
 
-class Authentication:
+class Authentication(BaseService):
     def create_access_token(self, data: dict):
         to_encode = data.copy()
         expire = datetime.now(timezone.utc) + timedelta(

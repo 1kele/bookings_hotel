@@ -1,4 +1,5 @@
 import sqlalchemy
+import logging
 
 from asyncpg import UniqueViolationError
 from sqlalchemy import select, insert, update, delete
@@ -45,9 +46,15 @@ class BaseRepositories:
         try:
             result = await self.session.execute(query)
         except IntegrityError as ex:
+            logging.error(
+                f"Не удалось добавить данные в бд тип ошибки: {type(ex.orig.__cause__)}, входные данные: {data}"
+            )
             if isinstance(ex.orig.__cause__, UniqueViolationError):
                 raise UserAlreadyExistException from ex
             else:
+                logging.error(
+                    f"Незнакомая ошибка, тип ошибки: {type(ex.orig.__cause__)}, входные данные: {data}"
+                )
                 raise ex
 
         return self.mapper.map_to_domain_entity(result.scalars().one())
