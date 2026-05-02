@@ -67,13 +67,13 @@ async def login(
     return {"access_token": access_token}
 
 
-@router.get("/me")
+@router.get("/me", summary="👨‍💻Мой профиль")
 async def get_me(user_id: UserIdDep, db: DBDep):
     user = await AuthenticationService(db).get_me(user_id)
     return {"data": user}
 
 
-@router.post("/logout")
+@router.post("/logout", summary="📤 Выход")
 async def logout(response: Response, db: DBDep):
     await AuthenticationService(db).logout(response)
     return {"status": "ok"}
