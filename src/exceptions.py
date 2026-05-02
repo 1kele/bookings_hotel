@@ -13,11 +13,14 @@ class NeglezheExceptions(Exception):
 class ObjectNotFoundException(NeglezheExceptions):
     detail = "Объект не найден"
 
+
 class RoomNotFoundException(NeglezheExceptions):
     detail = "Номер не найден"
 
+
 class HotelNotFoundException(NeglezheExceptions):
     detail = "Отель не найден"
+
 
 class AllRoomsAreBookedException(NeglezheExceptions):
     detail = "Не осталось свободных номеров"
@@ -26,11 +29,14 @@ class AllRoomsAreBookedException(NeglezheExceptions):
 class UserAlreadyExistException(NeglezheExceptions):
     detail = "Такой пользователь уже существует"
 
+
 class UserNotExistException(NeglezheExceptions):
     detail = "Такой пользователь не существует"
 
+
 class WrongPasswordException(NeglezheExceptions):
     detail = "Такой пользователь не существует"
+
 
 def check_date_to_after_date_from(date_from: date, date_to: date) -> None:
     if date_from >= date_to:
@@ -53,6 +59,7 @@ class HotelNotFoundHTTPException(NeglezheHTTPExceptions):
 class RoomNotFoundHTTPException(NeglezheHTTPExceptions):
     status_code = 404
     detail = "Номер не найден"
+
 
 class UserAlreadyExistHTTPException(NeglezheHTTPExceptions):
     status_code = 409

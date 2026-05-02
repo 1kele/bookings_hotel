@@ -7,7 +7,9 @@ from fastapi_cache.decorator import cache
 from src.api.dependencies import DBDep
 from src.exceptions import (
     HotelNotFoundHTTPException,
-    RoomNotFoundHTTPException, RoomNotFoundException, HotelNotFoundException,
+    RoomNotFoundHTTPException,
+    RoomNotFoundException,
+    HotelNotFoundException,
 )
 from src.schemas.rooms import RoomAddRequest, RoomPatchRequesst
 from src.services.rooms import RoomService
@@ -35,7 +37,7 @@ async def get_one_room(
     db: DBDep,
 ):
     try:
-        result = await RoomService(db).get_one_room(room_id,hotel_id)
+        result = await RoomService(db).get_one_room(room_id, hotel_id)
     except RoomNotFoundException:
         raise RoomNotFoundHTTPException
 

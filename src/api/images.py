@@ -8,4 +8,4 @@ router = APIRouter(prefix="/images", tags=["Изображения"])
 
 @router.post("/")
 def upload_image(file: UploadFile, background_tasks: BackgroundTasks):
-    ImageService().upload_image(file,background_tasks)
+    ImageService().upload_image(file, background_tasks)

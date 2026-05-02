@@ -9,8 +9,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.alter_column('users', 'created_at', server_default=func.now())
+    op.alter_column("users", "created_at", server_default=func.now())
 
 
 def downgrade() -> None:
-    op.alter_column('users', 'created_at', server_default=None)
+    op.alter_column("users", "created_at", server_default=None)
