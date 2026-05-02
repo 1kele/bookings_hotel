@@ -1,22 +1,15 @@
-import sqlalchemy
 from datetime import date
 
-from asyncpg import UniqueViolationError
-from fastapi import APIRouter, HTTPException, Body, Query
+from fastapi import APIRouter, Body, Query
 
 from fastapi_cache.decorator import cache
-from sqlalchemy.exc import NoResultFound
 
 from src.api.dependencies import DBDep
 from src.exceptions import (
-    ObjectNotFoundException,
-    check_date_to_after_date_from,
     HotelNotFoundHTTPException,
     RoomNotFoundHTTPException, RoomNotFoundException, HotelNotFoundException,
 )
-from src.schemas.facilities import RoomsFacilityAdd
-from src.schemas.rooms import RoomAdd, RoomAddRequest, RoomPatchRequesst, RoomPatch
-from src.services.hotels import HotelService
+from src.schemas.rooms import RoomAddRequest, RoomPatchRequesst
 from src.services.rooms import RoomService
 
 router = APIRouter(prefix="/hotel", tags=["Номера отелей"])

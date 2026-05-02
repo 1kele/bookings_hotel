@@ -1,11 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 from fastapi_cache.decorator import cache
-from sqlalchemy.exc import NoResultFound
 
 from src.api.dependencies import DBDep, UserIdDep
-from src.exceptions import ObjectNotFoundException, AllRoomsAreBookedException
-from src.schemas.bookings import BookingAddRequest, BookingAdd
+from src.schemas.bookings import BookingAddRequest
 from src.services.bookings import BookingService
 
 router = APIRouter(prefix="/bookings", tags=["Бронирование"])

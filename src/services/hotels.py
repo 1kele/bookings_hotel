@@ -4,7 +4,7 @@ from src.api.dependencies import PaginationDep
 from src.exceptions import (
     check_date_to_after_date_from,
     ObjectNotFoundException,
-    HotelNotFoundHTTPException, HotelNotFoundException,
+    HotelNotFoundException,
 )
 from src.schemas.hotels import HotelAdd, HotelPATCH
 from src.services.base import BaseService

@@ -1,11 +1,10 @@
 from datetime import date
 
-from pydantic import BaseModel
-from sqlalchemy import select, insert, update
-from sqlalchemy.exc import NoResultFound, IntegrityError
+from sqlalchemy import select
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import selectinload, joinedload
 
-from src.exceptions import ObjectNotFoundException, RoomNotFoundException
+from src.exceptions import RoomNotFoundException
 from src.models.rooms import RoomsOrm
 from src.repositories.base import BaseRepositories
 from src.repositories.mappers.mappers import RoomDataMapper, RoomWithRelsDataMapper

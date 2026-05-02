@@ -3,7 +3,7 @@ from datetime import date
 from src.exceptions import (
     check_date_to_after_date_from,
     ObjectNotFoundException,
-    RoomNotFoundHTTPException, HotelNotFoundException, RoomNotFoundException,
+    RoomNotFoundException,
 )
 from src.schemas.facilities import RoomsFacilityAdd
 from src.schemas.rooms import RoomAdd, RoomAddRequest, RoomPatchRequesst, RoomPatch

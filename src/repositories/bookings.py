@@ -1,7 +1,6 @@
 from datetime import date
 
 from sqlalchemy import select
-from fastapi import HTTPException
 
 from src.exceptions import AllRoomsAreBookedException
 from src.models.bookings import BookingsOrm
