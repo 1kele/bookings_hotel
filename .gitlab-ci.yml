@@ -17,17 +17,17 @@ build-job:
 Lint:
   stage: lint_format
   script:
-    -ruff check
+    - docker run --rm --network myNetwork booking-api-image ruff check
 
 Format:
   stage: lint_format
   script:
-    - ruff format
+    - docker run --rm --network myNetwork booking-api-image ruff format
 
 Pyright:
   stage: pyright
   script:
-    - pyright
+    - docker run --rm --network myNetwork booking-api-image pyright
 
 Migration:
   stage: migration
