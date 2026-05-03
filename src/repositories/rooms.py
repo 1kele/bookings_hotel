@@ -20,7 +20,7 @@ class RoomsRepository(BaseRepositories):
 
         query = (
             select(self.model)
-            .options(joinedload(self.model.facilities))
+            .options(joinedload(self.model.facilities))  # type: ignore
             .filter(RoomsOrm.id.in_(rooms_ids_to_get))
         )
 
@@ -32,7 +32,7 @@ class RoomsRepository(BaseRepositories):
 
     async def get_one_with_rels(self, **filter_by):
         query = (
-            select(self.model).options(selectinload(self.model.facilities)).filter_by(**filter_by)
+            select(self.model).options(selectinload(self.model.facilities)).filter_by(**filter_by)  # type: ignore
         )
         result = await self.session.execute(query)
         try:

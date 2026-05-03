@@ -10,6 +10,6 @@ class FacilityService(BaseService):
     async def create_facility(self, facility_data: FacilityAdd):
         result = await self.db.facilities.add(facility_data)
         await self.db.commit()
-        test_task.delay()
+        test_task.delay()  # type: ignore
 
         return result

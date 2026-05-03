@@ -25,7 +25,7 @@ def resize_image(image_path: str):
     with Image.open(image_path) as img:
         filename = os.path.splitext(os.path.basename(image_path))[0]
         ext = os.path.splitext(image_path)[1]
-
+        output_path = None
         for size in sizes:
             resized = img.copy()
             resized.thumbnail((size, size))

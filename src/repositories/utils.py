@@ -36,8 +36,6 @@ def rooms_ids_for_booking(
     if hotel_id:
         rooms_ids_for_hotels.filter_by(hotel_id=hotel_id)
 
-    rooms_ids_for_hotels = rooms_ids_for_hotels.subquery(name="get_rooms_ids_for_hotels")
-
     query = (
         select(whole_table.c.room_id)
         .select_from(whole_table)

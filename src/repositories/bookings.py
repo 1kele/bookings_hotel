@@ -15,7 +15,7 @@ class BookingsRepository(BaseRepositories):
     mapper = BookingDataMapper
 
     async def get_bookings_with_today_checkin(self):
-        query = select(self.model).filter(self.model.data_from == date.today())
+        query = select(self.model).filter(self.model.data_from == date.today())  # type: ignore
         res = await self.session.execute(query)
         return [self.mapper.map_to_domain_entity(booking) for booking in res.scalars().all()]
 

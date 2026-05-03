@@ -1,5 +1,7 @@
 from fastapi import HTTPException
 
+from src.schemas.hotels import Hotel
+from src.schemas.rooms import Room
 from src.api.dependencies import UserIdDep
 from src.exceptions import ObjectNotFoundException, AllRoomsAreBookedException
 from src.schemas.bookings import BookingAddRequest, BookingAdd
@@ -24,8 +26,8 @@ class BookingService(BaseService):
             raise HTTPException(status_code=400, detail="Номер не найден")
 
     async def add_booking(self, data: BookingAddRequest, user_id: UserIdDep):
-        room = await self.db.rooms.get_one(id=data.room_id)
-        hotel = await self.db.hotels.get_one(id=room.hotel_id)
+        room: Room = await self.db.rooms.get_one(id=data.room_id)  # type: ignore
+        hotel: Hotel = await self.db.hotels.get_one(id=room.hotel_id)  # type: ignore
         room_price: int = room.price
 
         _booking_data = BookingAdd(user_id=user_id, price=room_price, **data.model_dump())

@@ -11,9 +11,6 @@ celery_instance = Celery(
     ],
 )
 
-celery_instance.conf.enable_utc = True
-celery_instance.conf.timezone = "Europe/Moscow"
-
 celery_instance.conf.beat_schedule = {
     "pofig_booking": {
         "task": "booking_today_checkin",

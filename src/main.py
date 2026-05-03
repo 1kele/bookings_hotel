@@ -25,8 +25,10 @@ logging.basicConfig(level=logging.INFO)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # при старте приложения
-    await redis_manager.connection()
+    if redis_manager.redis is None:
+        raise RuntimeError("Redis не подключен")
     FastAPICache.init(RedisBackend(redis_manager.redis), prefix="fastapi_cache")
+    await redis_manager.connection()
     logging.info("FastAPI cache initialized")
     yield
     await redis_manager.close()

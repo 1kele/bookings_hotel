@@ -6,7 +6,7 @@ from src.exceptions import (
     RoomNotFoundException,
 )
 from src.schemas.facilities import RoomsFacilityAdd
-from src.schemas.rooms import RoomAdd, RoomAddRequest, RoomPatchRequesst, RoomPatch
+from src.schemas.rooms import RoomAdd, RoomAddRequest, RoomPatchRequesst, RoomPatch, Room
 from src.services.base import BaseService
 from src.services.hotels import HotelService
 
@@ -28,12 +28,11 @@ class RoomService(BaseService):
         except ObjectNotFoundException as ex:
             raise RoomNotFoundException from ex
 
-    async def create_room(self, hotel_id: int, data: RoomAddRequest):
-
+    async def create_room(self, hotel_id: int, data: RoomAddRequest) -> Room:
         await HotelService(self.db).check_hotel_exists(hotel_id)
 
         _room_data = RoomAdd(hotel_id=hotel_id, **data.model_dump())
-        room = await self.db.rooms.add(_room_data)
+        room: Room = await self.db.rooms.add(_room_data)  # type: ignore
 
         rooms_facilities_data = [
             RoomsFacilityAdd(room_id=room.id, facility_id=f_id) for f_id in data.facilities_ids
@@ -62,7 +61,7 @@ class RoomService(BaseService):
 
         await self.db.rooms.edit(_room_data, exclude_unset=True, hotel_id=hotel_id, id=room_id)
 
-        if "facilities_ids" in _room_data_check:
+        if "facilities_ids" in _room_data_check and data.facilities_ids is not None:
             await self.db.rooms_facilities.set_room_facilities(room_id, data.facilities_ids)
 
         await self.db.commit()

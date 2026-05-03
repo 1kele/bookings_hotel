@@ -1,16 +1,19 @@
 import logging
 
+from typing import Sequence, ClassVar
 from asyncpg import UniqueViolationError
 from sqlalchemy import select, insert, update, delete
 from pydantic import BaseModel
 from sqlalchemy.exc import NoResultFound, IntegrityError
 
+from src.database import Base
 from src.exceptions import ObjectNotFoundException, UserAlreadyExistException
+from src.repositories.mappers.base import DataMapper
 
 
 class BaseRepositories:
-    model = None
-    mapper = None
+    model: ClassVar[type[Base]]
+    mapper: ClassVar[type[DataMapper]]
 
     def __init__(self, session):
         self.session = session
@@ -45,20 +48,16 @@ class BaseRepositories:
         try:
             result = await self.session.execute(query)
         except IntegrityError as ex:
-            logging.error(
-                f"Не удалось добавить данные в бд тип ошибки: {type(ex.orig.__cause__)}, входные данные: {data}"
-            )
-            if isinstance(ex.orig.__cause__, UniqueViolationError):
+            if ex.orig and isinstance(ex.orig.__cause__, UniqueViolationError):
                 raise UserAlreadyExistException from ex
-            else:
-                logging.error(
-                    f"Незнакомая ошибка, тип ошибки: {type(ex.orig.__cause__)}, входные данные: {data}"
-                )
-                raise ex
+            logging.error(
+                f"Незнакомая ошибка, тип ошибки: {type(ex.orig.__cause__ if ex.orig else None)}, входные данные: {data}"
+            )
+            raise ex
 
         return self.mapper.map_to_domain_entity(result.scalars().one())
 
-    async def add_bulk(self, data: list[BaseModel]):
+    async def add_bulk(self, data: Sequence[BaseModel]):
         add_data_stmt = insert(self.model).values([item.model_dump() for item in data])
         await self.session.execute(add_data_stmt)
 
