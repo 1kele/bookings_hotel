@@ -24,8 +24,8 @@ class RoomsFacilitiesRepositories(BaseRepositories):
 
         if ids_to_delete:
             delete_stmt = delete(self.model).filter(
-                self.model.facility_id.in_(ids_to_delete),
-                self.model.room_id == room_id,  # type: ignore
+                self.model.facility_id.in_(ids_to_delete),# type: ignore
+                self.model.room_id == room_id,# type: ignore
             )
             await self.session.execute(delete_stmt)
 
