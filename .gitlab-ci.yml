@@ -37,7 +37,8 @@ Migration:
 Tests:
   stage: tests
   script:
-    - docker run --rm --network myNetwork booking-api-image pytest -s
+    - cp ${env_test} .env-test
+    - docker run --rm --network myNetwork --env-file .env-test booking-api-image pytest -s
 
 deploy-job:
   stage: deploy
