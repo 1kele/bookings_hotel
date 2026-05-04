@@ -15,7 +15,7 @@ from src.services.auths import AuthenticationService
 router = APIRouter(prefix="/auth", tags=["Аунтефикация и Авторизация"])
 
 
-@router.post("/register")
+@router.post("/register", summary="💻Регистрация")
 async def register(data: UserRequestAdd, db: DBDep):
     try:
         await AuthenticationService(db).register(data)
@@ -24,7 +24,7 @@ async def register(data: UserRequestAdd, db: DBDep):
     return {"status": "Ok"}
 
 
-@router.post("/login")
+@router.post("/login", summary="🔑Логин")
 async def login(
     response: Response,
     db: DBDep,

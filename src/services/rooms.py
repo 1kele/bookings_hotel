@@ -37,8 +37,8 @@ class RoomService(BaseService):
         rooms_facilities_data = [
             RoomsFacilityAdd(room_id=room.id, facility_id=f_id) for f_id in data.facilities_ids
         ]
-
-        await self.db.rooms_facilities.add_bulk(rooms_facilities_data)
+        if rooms_facilities_data:
+            await self.db.rooms_facilities.add_bulk(rooms_facilities_data)
         await self.db.commit()
 
         return room
@@ -47,9 +47,10 @@ class RoomService(BaseService):
         await HotelService(self.db).check_hotel_exists(hotel_id)
         await self.check_room_exists(room_id)
 
-        RoomAdd(hotel_id=hotel_id, **data.model_dump(exclude={"facilities_ids"}))
+        _room_data = RoomAdd(hotel_id=hotel_id, **data.model_dump(exclude={"facilities_ids"}))
 
         await self.db.rooms_facilities.set_room_facilities(room_id, data.facilities_ids)
+        await self.db.rooms.edit(_room_data, True, id=room_id)
         await self.db.commit()
 
     async def partially_update_room(self, hotel_id: int, room_id: int, data: RoomPatchRequesst):
