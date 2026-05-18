@@ -50,7 +50,7 @@ async def setup_database(check_mode, db):
 async def ac():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
-
+#1
 
 @pytest.fixture(scope="session", autouse=True)
 async def register_user(setup_database, ac):
